@@ -23,7 +23,7 @@ Forecast compute_forecast(const std::vector<double>& dailyWeather) {
   // 得到的是iterator， 解引用
   auto min_temp = *std::min_element(dailyWeather.begin(), dailyWeather.end());
   auto max_temp = *std::max_element(dailyWeather.begin(), dailyWeather.end());
-  auto sum_temp = std::accumulate(dailyWeather.begin(), dailyWeather.end(), 0);
+  auto sum_temp = std::accumulate(dailyWeather.begin(), dailyWeather.end(), 0.0);
   double avg_temp = sum_temp / (double)dailyWeather.size();
 
   Forecast forecast = {min_temp, max_temp, avg_temp};
@@ -40,6 +40,7 @@ std::vector<Forecast> get_forecasts(const std::vector<std::vector<double>>& weat
   // 使用 back_inserter 给空vector插入新元素
   std::transform(weatherData.begin(), weatherData.end(), std::back_inserter(forecast_vecs),
                  compute_forecast);
+
   return forecast_vecs;
 }
 
@@ -48,11 +49,14 @@ std::vector<Forecast> get_filtered_data(const std::vector<Forecast>& forecastDat
   std::vector<Forecast> result = forecastData;
   // 全局变量不用捕获
   auto temp_filter = [](Forecast fcst) {
-    return (fcst.max_temp - fcst.min_temp) > kMaxTempRequirement &&
-           fcst.avg_temp >= uAvgTempRequirement;
+    return (fcst.max_temp - fcst.min_temp) < kMaxTempRequirement ||
+           fcst.avg_temp < uAvgTempRequirement;
   };
   result.erase(std::remove_if(result.begin(), result.end(), temp_filter), result.end());
-
+    for (auto v : result) {
+        if (v.avg_temp < 60)
+    {std::cout << v.min_temp <<" "<< v.max_temp << " " << v.avg_temp << "\n";}
+  }
   return result;
 }
 
