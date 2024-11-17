@@ -47,33 +47,52 @@ void User::set_friend(size_t index, const std::string& name) { _friends[index] =
 
 std::ostream& operator<<(std::ostream& out, const User& user) {
   out << "User(name=" << user._name << ", friends=[";
-  out << user._friends[0];
-  for (int i = 1; i < user._size; i++) {
-    out << ", " << user._friends[i];
-  } // 循环输出friends list
+  if (user._size > 0) { // 空的情况还是得注意考虑
+    out << *user._friends;
+    for (int i = 1; i < user._size; i++) {
+      out << ", " << user._friends[i];
+    } // 循环输出friends list
+  }
   out << "])";
+
   return out;
 }
 
 User::~User() { delete[] _friends; }
 
-User::User(const User& user) : _name(user._name), _friends(new std::string[user._capacity]), _size(user._size), _capacity(user._capacity) {
-    for (size_t i = 0; i < _size; i++) {
-        _friends[i] = user._friends[i];
-    }
+User::User(const User& user)
+    : _name(user._name), _friends(new std::string[user._capacity]), _size(user._size),
+      _capacity(user._capacity) {
+  for (size_t i = 0; i < _size; i++) {
+    _friends[i] = user._friends[i];
+  }
 }
 
 User& User::operator=(const User& user) {
-    if (this == &user) {return *this;}
-
-    delete[] _friends;
-
-    _name = user._name;
-    _size = user._size;
-    _capacity = user._capacity;
-    _friends = new std::string[_capacity];
-    for (size_t i = 0; i < _size; i++) {
-        _friends[i] = user._friends[i];
-    }
+  if (this == &user) {
     return *this;
+  }
+
+  delete[] _friends;
+
+  _name = user._name;
+  _size = user._size;
+  _capacity = user._capacity;
+  _friends = new std::string[_capacity];
+  for (size_t i = 0; i < _size; i++) {
+    _friends[i] = user._friends[i];
+  }
+  return *this;
 }
+
+User& User::operator+=(User& other) {
+//   if (this == &other) {
+//     return *this;
+//   }
+ 
+  other.add_friend(this->_name);
+  this->add_friend(other._name);
+  return *this;
+}
+
+bool User::operator<(const User& other) const { return _name < other._name; }

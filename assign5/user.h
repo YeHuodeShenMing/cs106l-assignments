@@ -6,8 +6,7 @@
 #include <iostream>
 #include <string>
 
-class User
-{
+class User {
 public:
   User(const std::string& name);
   void add_friend(const std::string& name);
@@ -15,20 +14,21 @@ public:
   size_t size() const;
   void set_friend(size_t index, const std::string& name);
 
-  /** 
+  /**
    * STUDENT TODO:
    * Your custom operators and special member functions will go here!
    */
-  friend std::ostream& operator << (std::ostream& out, const User& user);
+  friend std::ostream& operator<<(std::ostream& out, const User& user);
 
-  ~User(); // deconstructor
-  User(const User& user); // copy constructor
-  User& operator = (const User& user); // copy assignment
+  ~User();                           // deconstructor
+  User(const User& user);            // copy constructor
+  User& operator=(const User& user); // copy assignment
 
-  User(User&& user) = delete; // move constructor
-  User& operator = (User&& user) = delete; // move assignment
+  User(User&& user) = delete;            // move constructor
+  User& operator=(User&& user) = delete; // move assignment
 
-  
+  User& operator+=(User& other);
+  bool operator<(const User& other) const;
 
 private:
   std::string _name;
