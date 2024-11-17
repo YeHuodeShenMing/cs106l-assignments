@@ -19,6 +19,16 @@ public:
    * STUDENT TODO:
    * Your custom operators and special member functions will go here!
    */
+  friend std::ostream& operator << (std::ostream& out, const User& user);
+
+  ~User(); // deconstructor
+  User(const User& user); // copy constructor
+  User& operator = (const User& user); // copy assignment
+
+  User(User&& user) = delete; // move constructor
+  User& operator = (User&& user) = delete; // move assignment
+
+  
 
 private:
   std::string _name;
