@@ -105,15 +105,14 @@ public:
 
   unique_ptr(unique_ptr&& other) : _address(other._address) { other._address = nullptr; }
 
-  unique_ptr& operator=(unique_ptr&& other) {
-    if (this != &other) {
-      // Delete the currently managed object
-      delete this->_address;
+  unique_ptr& operator=(unique_ptr&& other) noexcept {
+    if (this != &other) { // 检查自我赋值
+      delete _address;    // 删除当前管理的对象
 
-      // Transfer ownership from 'other' to 'this'
-      _address = other._address;
-      other._address = nullptr; // Leave 'other' in a valid state
+      _address = other._address; // 转移所有权
+      other._address = nullptr;  // 将 'other' 的设置为 nullptr
     }
+
     return *this;
   }
 };
