@@ -54,7 +54,7 @@ template <typename T> unique_ptr<ListNode<T>> create_list(const std::vector<T>& 
   /* STUDENT TODO: Implement this method */
 //   throw std::runtime_error("Not implemented: createList");
     unique_ptr<ListNode<T>> head = nullptr;
-    for (int i = 0; i < values.size(); i++) {
+    for (int i = values.size() - 1; i > -1; i--) {
         unique_ptr<ListNode<T>> node = make_unique<ListNode<T>>(values[i]);
         node->next = std::move(head);
         head = std::move(node);

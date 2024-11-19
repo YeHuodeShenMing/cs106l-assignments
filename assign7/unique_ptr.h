@@ -88,7 +88,7 @@ public:
   operator bool() const {
     /* STUDENT TODO: Implement the boolean conversion operator */
     // throw std::runtime_error("Not implemented: operator bool() const");
-    return this != nullptr;
+    return _address != nullptr;
   }
 
   /** STUDENT TODO: In the space below, do the following:
